@@ -1,11 +1,11 @@
 import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Routes as ReactRouterRoutes } from 'react-router-dom';
 import MainPage from '../pages/MainPage';
 
 const Routes = () => {
   return (
-    <Switch>
-      <Route exact path='/' render={MainPage} />
-    </Switch>
+    <ReactRouterRoutes>
+      <Route path='/' element={<MainPage />} />
+    </ReactRouterRoutes>
   );
 };

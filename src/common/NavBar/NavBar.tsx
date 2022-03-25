@@ -1,6 +1,6 @@
-import React, { FC, useRef } from 'react';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
-import { Box, Grid, Typography, useTheme, Link } from '@mui/material';
+import React, { FC } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { Box, Grid, Typography, useTheme, Link, AppBar, Toolbar } from '@mui/material';
 
 export interface NavBarLink {
   text: string;
@@ -14,8 +14,7 @@ export interface NavBarProps {
 }
 
 const NavBar: FC<NavBarProps> = ({ links }) => {
-  const history = useHistory();
-  const dropdownButtonRef = useRef();
+  // const history = useHistory();
   const theme = useTheme();
 
   // useLayoutEffect(() => {
@@ -23,28 +22,30 @@ const NavBar: FC<NavBarProps> = ({ links }) => {
   // }, [user, history]);
 
   return (
-    <AppBar position='relative' color='primary' elevation={0} style={{ zIndex: 1250 }}>
+    <AppBar position='relative' color='primary' elevation={0}>
       <Toolbar>
-        <Grid container direction='row' alignItems='center' justify='space-between'>
+        <Grid container direction='row' alignItems='center' justifyContent='space-between'>
           {/* Logo */}
           <Grid item xs='auto'>
             <RouterLink to='/'>
-              <Grid container item justify='flex-start' alignItems='center'>
-                {/*<img alt='WorkRise' src={logoWhite} />*/}
+              <Grid container item justifyContent='flex-start' alignItems='center'>
+                any logo
               </Grid>
             </RouterLink>
           </Grid>
           {/* Navbar Links */}
           {links && (
-            <Grid item xs data-cy='styled-links-grid'>
+            <Grid item xs>
               <Box ml={5}>
-                <Grid container direction='row' justify='flex-start' alignItems='center'>
+                <Grid container direction='row' justifyContent='flex-start' alignItems='center'>
                   {links.map((link: NavBarLink) => (
                     <Grid item sm='auto' key={JSON.stringify(link)}>
                       <Box mr={5}>
-                        <Link variant='h6' component='a' href={link.linkTo} color='inherit'>
-                          {link.text}
-                        </Link>
+                        <RouterLink to={link.linkTo}>
+                          <Link variant='h6' color='inherit'>
+                            {link.text}
+                          </Link>
+                        </RouterLink>
                       </Box>
                     </Grid>
                   ))}
