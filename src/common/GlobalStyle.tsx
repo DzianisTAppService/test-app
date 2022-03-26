@@ -9,6 +9,7 @@ const GlobalStyle = createGlobalStyle`
   }
   body {
     margin: 0;
+    color: #545e6f;
   }
   html, body, #root {
     height: 100%;
