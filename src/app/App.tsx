@@ -8,17 +8,17 @@ import PATHS from 'constants/routes-paths';
 
 import { AppContainer, MainContentContainer } from './App.styles';
 
+const navItems = [
+  { text: 'Main', linkTo: PATHS.welcome },
+  { text: 'Subscribe', linkTo: PATHS.subscribe },
+];
+
 function App() {
   return (
     <BrowserRouter>
       <AppContainer>
         <GlobalStyle />
-        <NavBar
-          links={[
-            { text: 'Main', linkTo: PATHS.welcome },
-            { text: 'Subscribe', linkTo: PATHS.subscribe },
-          ]}
-        />
+        <NavBar links={navItems} />
 
         <MainContentContainer>
           <Routes />
