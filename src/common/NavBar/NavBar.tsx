@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Grid, Typography, useTheme, Toolbar } from '@mui/material';
+import { Box, Grid, Typography, Toolbar } from '@mui/material';
 
 import PATHS from 'constants/routes-paths';
 import { AppBarLogo, AppBarStyled, LogoLink } from './NavBar.styles';
@@ -18,7 +18,6 @@ export interface NavBarProps {
 
 const NavBar: FC<NavBarProps> = ({ links }) => {
   // const history = useHistory();
-  const theme = useTheme();
 
   // useLayoutEffect(() => {
   //   if (!user) return history.push(paths.LANDING_PAGE);
