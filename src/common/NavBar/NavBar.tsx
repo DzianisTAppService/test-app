@@ -1,6 +1,9 @@
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import { Box, Grid, Typography, useTheme, Link, AppBar, Toolbar } from '@mui/material';
+import { Box, Grid, Typography, useTheme, Toolbar } from '@mui/material';
+
+import PATHS from 'constants/routes-paths';
+import { AppBarLogo, AppBarStyled, LogoLink } from './NavBar.styles';
 
 export interface NavBarLink {
   text: string;
@@ -22,16 +25,18 @@ const NavBar: FC<NavBarProps> = ({ links }) => {
   // }, [user, history]);
 
   return (
-    <AppBar position='relative' color='primary' elevation={0}>
+    <AppBarStyled position='relative' color='primary' elevation={0}>
       <Toolbar>
         <Grid container direction='row' alignItems='center' justifyContent='space-between'>
           {/* Logo */}
           <Grid item xs='auto'>
-            <RouterLink to='/'>
+            <LogoLink to={PATHS.welcome} style={{ textDecoration: 'none' }}>
               <Grid container item justifyContent='flex-start' alignItems='center'>
-                any logo
+                <AppBarLogo>
+                  <Typography color='inherit'>Test App</Typography>
+                </AppBarLogo>
               </Grid>
-            </RouterLink>
+            </LogoLink>
           </Grid>
           {/* Navbar Links */}
           {links && (
@@ -42,9 +47,9 @@ const NavBar: FC<NavBarProps> = ({ links }) => {
                     <Grid item sm='auto' key={JSON.stringify(link)}>
                       <Box mr={5}>
                         <RouterLink to={link.linkTo}>
-                          <Link variant='h6' color='inherit'>
+                          <Typography variant='h6' component='span' color='inherit'>
                             {link.text}
-                          </Link>
+                          </Typography>
                         </RouterLink>
                       </Box>
                     </Grid>
@@ -55,8 +60,8 @@ const NavBar: FC<NavBarProps> = ({ links }) => {
           )}
         </Grid>
       </Toolbar>
-    </AppBar>
+    </AppBarStyled>
   );
 };
 
-export default NavBar;
+export default memo(NavBar);

@@ -1,8 +1,12 @@
 import React from 'react';
 import { BrowserRouter } from 'react-router-dom';
+
 import NavBar from 'common/NavBar';
 import GlobalStyle from 'common/GlobalStyle';
-import { AppContainer } from './App.styles';
+import Routes from './Routes';
+import PATHS from 'constants/routes-paths';
+
+import { AppContainer, MainContentContainer } from './App.styles';
 
 function App() {
   return (
@@ -11,14 +15,15 @@ function App() {
         <GlobalStyle />
         <NavBar
           links={[
-            { text: 'welcome page', linkTo: '/welcome' },
-            { text: 'subscribe', linkTo: '/subscribe' },
+            { text: 'welcome page', linkTo: PATHS.welcome },
+            { text: 'subscribe', linkTo: PATHS.subscribe },
           ]}
         />
 
-        {/*<MainContentContainer>*/}
-        {/*  <AdminLeftSideBar>{Routes}</AdminLeftSideBar>*/}
-        {/*</MainContentContainer>*/}
+        <MainContentContainer>
+          <Routes />
+          {/*  <AdminLeftSideBar>{Routes}</AdminLeftSideBar>*/}
+        </MainContentContainer>
       </AppContainer>
     </BrowserRouter>
   );
