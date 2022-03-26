@@ -15,14 +15,13 @@ function App() {
         <GlobalStyle />
         <NavBar
           links={[
-            { text: 'welcome page', linkTo: PATHS.welcome },
-            { text: 'subscribe', linkTo: PATHS.subscribe },
+            { text: 'Main', linkTo: PATHS.welcome },
+            { text: 'Subscribe', linkTo: PATHS.subscribe },
           ]}
         />
 
         <MainContentContainer>
           <Routes />
-          {/*  <AdminLeftSideBar>{Routes}</AdminLeftSideBar>*/}
         </MainContentContainer>
       </AppContainer>
     </BrowserRouter>

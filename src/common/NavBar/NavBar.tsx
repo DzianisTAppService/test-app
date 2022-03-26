@@ -1,5 +1,5 @@
 import React, { FC, memo } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Box, Grid, Typography, Toolbar } from '@mui/material';
 
 import PATHS from 'constants/routes-paths';
@@ -45,11 +45,17 @@ const NavBar: FC<NavBarProps> = ({ links }) => {
                   {links.map((link: NavBarLink) => (
                     <Grid item sm='auto' key={JSON.stringify(link)}>
                       <Box mr={5}>
-                        <RouterLink to={link.linkTo}>
+                        <NavLink
+                          to={link.linkTo}
+                          style={({ isActive }: { isActive: boolean }) => ({
+                            color: isActive ? '#fff' : '#545e6f',
+                            fontWeight: isActive ? 'bold' : 'normal',
+                            textDecoration: 'none',
+                          })}>
                           <Typography variant='h6' component='span' color='inherit'>
                             {link.text}
                           </Typography>
-                        </RouterLink>
+                        </NavLink>
                       </Box>
                     </Grid>
                   ))}
