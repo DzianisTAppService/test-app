@@ -36,14 +36,18 @@ const SubscriptionForm = () => {
           <Controller
             name={'organization'}
             control={control}
-            render={({ field: { onChange, value } }) => (
+            render={({ field: { onChange } }) => (
               <FormControl fullWidth>
                 <InputLabel id='organization-label'>Organisation</InputLabel>
                 <Select labelId='organization-label' id='organization' onChange={onChange} value={organizationValue}>
                   {(organizations as OrganizationType[]).map(({ name, id }) => (
                     <MenuItem key={id} value={id}>
                       <RadioGroup aria-label={name} name={name}>
-                        <FormControlLabel value={id} control={<Radio />} label={name} />
+                        <FormControlLabel
+                          value={id}
+                          control={<Radio checked={id === organizationValue} />}
+                          label={name}
+                        />
                       </RadioGroup>
                     </MenuItem>
                   ))}

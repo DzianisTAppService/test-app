@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Backdrop, Box, Button, Fade, Grid, Modal, Typography } from '@mui/material';
+
+import SubscriptionForm from './components/SubscriptionForm';
+
 import { ModalContentWrapperStyled } from './SubscribePage.styles';
-import SubscriptionForm from './SubscriptionForm';
 
 const SubscribePage = () => {
   const [open, setOpen] = useState<boolean>(false);
