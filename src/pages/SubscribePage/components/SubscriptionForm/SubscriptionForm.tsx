@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useMemo } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   Box,
   Button,
+  Checkbox,
   Divider,
   FormControl,
   FormControlLabel,
@@ -21,20 +22,29 @@ type OrganizationType = {
   id: string;
 };
 
+type UserType = {
+  firstName: string;
+  lastName: string;
+  id: string;
+  organizationId: string;
+};
+
 const SubscriptionForm = () => {
-  const { handleSubmit, reset, control, watch } = useForm();
+  const { handleSubmit, control, watch } = useForm();
 
   const organizationValue = watch('organization');
+  const filteredUsers = useMemo(() => {
+    return users.filter(user => user.organizationId === organizationValue);
+  }, [organizationValue]);
 
   const onSubmit = (data: any) => console.log(data);
 
-  console.log(organizationValue, 'organization');
   return (
     <form>
-      <Grid container direction='column'>
+      <Grid container direction='column' spacing={3}>
         <Grid item>
           <Controller
-            name={'organization'}
+            name='organization'
             control={control}
             render={({ field: { onChange } }) => (
               <FormControl fullWidth>
@@ -56,6 +66,38 @@ const SubscriptionForm = () => {
             )}
           />
         </Grid>
+
+        {organizationValue && (
+          <Grid item>
+            <Controller
+              name='users'
+              control={control}
+              render={({ field: { onChange } }) => (
+                <FormControl fullWidth>
+                  <InputLabel id='users-label'>Users</InputLabel>
+                  <Select labelId='users-label' id='users' onChange={onChange} value={organizationValue}>
+                    {(filteredUsers as UserType[]).map(({ firstName, lastName, id }) => (
+                      <MenuItem key={id} value={id}>
+                        {/*checked={*/}
+                        {/*id.findIndex(item => item.id === variant.id) >= 0*/}
+                        <FormControlLabel control={<Checkbox />} label={`${firstName} ${lastName}`} />
+                      </MenuItem>
+                      // <MenuItem key={id} value={id}>
+                      //   <RadioGroup aria-label={id} name={id}>
+                      //     <FormControlLabel
+                      //       value={id}
+                      //       control={<Radio checked={id === organizationValue} />}
+                      //       label={name}
+                      //     />
+                      //   </RadioGroup>
+                      // </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              )}
+            />
+          </Grid>
+        )}
 
         <Box my={3}>
           <Divider />
