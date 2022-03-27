@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Backdrop, Button, Fade, Grid, Modal, Typography } from '@mui/material';
+import { Backdrop, Box, Button, Fade, Grid, Modal, Typography } from '@mui/material';
 import { ModalContentWrapperStyled } from './SubscribePage.styles';
+import SubscriptionForm from './SubscriptionForm';
 
 const SubscribePage = () => {
   const [open, setOpen] = useState<boolean>(false);
@@ -26,11 +27,11 @@ const SubscribePage = () => {
           <Fade in={open}>
             <ModalContentWrapperStyled>
               <Typography id='modal-modal-title' variant='h6' component='h2'>
-                Text in a modal
+                Subscription Form
               </Typography>
-              <Typography id='modal-modal-description' sx={{ mt: 2 }}>
-                Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-              </Typography>
+              <Box mt={2}>
+                <SubscriptionForm />
+              </Box>
             </ModalContentWrapperStyled>
           </Fade>
         </Modal>
