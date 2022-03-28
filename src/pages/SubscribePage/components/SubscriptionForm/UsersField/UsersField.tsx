@@ -80,6 +80,7 @@ const UsersField: FC = () => {
                     </InputAdornment>
                   ),
                 }}
+                onKeyDown={e => e.stopPropagation()}
               />
             </Box>
             {filteredUsers.map(({ firstName, lastName, id }) => (
