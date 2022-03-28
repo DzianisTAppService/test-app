@@ -8,12 +8,16 @@ import {
   FormControl,
   FormControlLabel,
   Grid,
+  InputAdornment,
   InputLabel,
   MenuItem,
   Radio,
   RadioGroup,
   Select,
+  TextField,
+  Typography,
 } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 import { organizations, users } from 'testData';
 
@@ -30,15 +34,23 @@ type UserType = {
 };
 
 const SubscriptionForm = () => {
-  const { handleSubmit, control, watch } = useForm();
+  const { handleSubmit, control, watch, setValue } = useForm();
 
-  const organizationValue = watch('organization');
-  const filteredUsers = useMemo(() => {
-    return users.filter(user => user.organizationId === organizationValue);
-  }, [organizationValue]);
+  const organizationValue: string = watch('organization');
+  const usersValue: string[] = watch('users') || [];
+
+  const filteredUsers: UserType[] = useMemo(
+    () => users.filter(user => user.organizationId === organizationValue).slice(0, 9),
+    [organizationValue],
+  );
+  const selectedOrganisationName: string = useMemo(
+    () => organizations.find(org => org.id === organizationValue)?.name || 'Error',
+    [organizationValue],
+  );
 
   const onSubmit = (data: any) => console.log(data);
 
+  console.log(usersValue, 'usersValue');
   return (
     <form>
       <Grid container direction='column' spacing={3}>
@@ -48,8 +60,15 @@ const SubscriptionForm = () => {
             control={control}
             render={({ field: { onChange } }) => (
               <FormControl fullWidth>
-                <InputLabel id='organization-label'>Organisation</InputLabel>
-                <Select labelId='organization-label' id='organization' onChange={onChange} value={organizationValue}>
+                <InputLabel id='organization-label' style={{ backgroundColor: '#fff' }}>
+                  Organisation
+                </InputLabel>
+                <Select
+                  labelId='organization-label'
+                  id='organization'
+                  onChange={onChange}
+                  value={organizationValue}
+                  renderValue={() => <Typography>{selectedOrganisationName}</Typography>}>
                   {(organizations as OrganizationType[]).map(({ name, id }) => (
                     <MenuItem key={id} value={id}>
                       <RadioGroup aria-label={name} name={name}>
@@ -72,25 +91,49 @@ const SubscriptionForm = () => {
             <Controller
               name='users'
               control={control}
-              render={({ field: { onChange } }) => (
+              render={() => (
                 <FormControl fullWidth>
-                  <InputLabel id='users-label'>Users</InputLabel>
-                  <Select labelId='users-label' id='users' onChange={onChange} value={organizationValue}>
-                    {(filteredUsers as UserType[]).map(({ firstName, lastName, id }) => (
+                  <InputLabel id='users-label' style={{ backgroundColor: '#fff' }}>
+                    Users
+                  </InputLabel>
+                  <Select
+                    labelId='users-label'
+                    id='users'
+                    multiple
+                    value={usersValue}
+                    renderValue={() => <Typography>{usersValue.length} selected</Typography>}>
+                    <Box mx={1} mb={1}>
+                      <TextField
+                        fullWidth
+                        variant='outlined'
+                        placeholder='Search the user...'
+                        InputProps={{
+                          startAdornment: (
+                            <InputAdornment position='start'>
+                              <SearchIcon />
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    </Box>
+                    {filteredUsers.map(({ firstName, lastName, id }) => (
                       <MenuItem key={id} value={id}>
-                        {/*checked={*/}
-                        {/*id.findIndex(item => item.id === variant.id) >= 0*/}
-                        <FormControlLabel control={<Checkbox />} label={`${firstName} ${lastName}`} />
+                        <FormControlLabel
+                          onChange={() => {
+                            const ifSelected = usersValue.indexOf(id);
+                            if (ifSelected > -1) {
+                              setValue(
+                                'users',
+                                usersValue.filter(userId => userId !== id),
+                              );
+                            } else {
+                              setValue('users', [...usersValue, id]);
+                            }
+                          }}
+                          control={<Checkbox checked={Boolean(usersValue.find((u: string) => u === id))} />}
+                          label={`${firstName} ${lastName}`}
+                        />
                       </MenuItem>
-                      // <MenuItem key={id} value={id}>
-                      //   <RadioGroup aria-label={id} name={id}>
-                      //     <FormControlLabel
-                      //       value={id}
-                      //       control={<Radio checked={id === organizationValue} />}
-                      //       label={name}
-                      //     />
-                      //   </RadioGroup>
-                      // </MenuItem>
                     ))}
                   </Select>
                 </FormControl>
