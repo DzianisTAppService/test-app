@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 import PATHS from 'constants/routes-paths';
 
-const MainPage = () => {
+const MainPage: FC = () => {
   const navigate = useNavigate();
 
   return (
@@ -14,7 +14,7 @@ const MainPage = () => {
           <Typography>Hi, you are welcome on my Test App</Typography>
           <Box mt={2} display='flex' justifyContent='center'>
             <Button variant='outlined' onClick={() => navigate(PATHS.subscribe)}>
-              Let's Subscribe
+              Let&apos;s Subscribe
             </Button>
           </Box>
         </Box>

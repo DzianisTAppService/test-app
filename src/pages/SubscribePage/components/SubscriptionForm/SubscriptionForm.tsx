@@ -1,167 +1,44 @@
-import React, { useMemo, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  Grid,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
+import React, { FC } from 'react';
+import { useForm, FormProvider } from 'react-hook-form';
+import { Box, Button, Divider, Grid } from '@mui/material';
 
-import { organizations, users } from 'testData';
+import UsersField from './UsersField';
+import OrganizationField from './OrganizationField/OrganizationField';
 
-type OrganizationType = {
-  name: string;
-  id: string;
-};
-
-type UserType = {
-  firstName: string;
-  lastName: string;
-  id: string;
-  organizationId: string;
-};
-
-const SubscriptionForm = () => {
-  const { handleSubmit, control, watch, setValue } = useForm();
-  const [searchText, setSearchText] = useState('');
+const SubscriptionForm: FC = () => {
+  const methods = useForm();
+  const { handleSubmit, watch } = methods;
 
   const organizationValue: string = watch('organization');
-  const usersValue: string[] = watch('users') || [];
-
-  const filteredUsers: UserType[] = useMemo(
-    () => users.filter(user => user.organizationId === organizationValue).slice(0, 9),
-    [organizationValue],
-  );
-  const selectedOrganisationName: string = useMemo(
-    () => organizations.find(org => org.id === organizationValue)?.name || 'Error',
-    [organizationValue],
-  );
-
-  const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchText(e.target.value);
-  };
-
-  const handleCheckUsers = (id: string) => {
-    const ifSelected = usersValue.indexOf(id);
-    if (ifSelected > -1) {
-      setValue(
-        'users',
-        usersValue.filter(userId => userId !== id),
-      );
-    } else {
-      setValue('users', [...usersValue, id]);
-    }
-  };
 
   const onSubmit = (data: any) => console.log(data);
 
-  console.log(usersValue, 'usersValue');
   return (
-    <form>
-      <Grid container direction='column' spacing={3}>
-        <Grid item>
-          <Controller
-            name='organization'
-            control={control}
-            render={({ field: { onChange } }) => (
-              <FormControl fullWidth>
-                <InputLabel id='organization-label' style={{ backgroundColor: '#fff' }}>
-                  Organisation
-                </InputLabel>
-                <Select
-                  labelId='organization-label'
-                  id='organization'
-                  onChange={onChange}
-                  value={organizationValue}
-                  renderValue={() => <Typography>{selectedOrganisationName}</Typography>}>
-                  {(organizations as OrganizationType[]).map(({ name, id }) => (
-                    <MenuItem key={id} value={id}>
-                      <RadioGroup aria-label={name} name={name}>
-                        <FormControlLabel
-                          value={id}
-                          control={<Radio checked={id === organizationValue} />}
-                          label={name}
-                        />
-                      </RadioGroup>
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            )}
-          />
-        </Grid>
-
-        {organizationValue && (
+    <FormProvider {...methods}>
+      <form>
+        <Grid container direction='column' spacing={3}>
           <Grid item>
-            <Controller
-              name='users'
-              control={control}
-              render={() => (
-                <FormControl fullWidth>
-                  <InputLabel id='users-label' style={{ backgroundColor: '#fff' }}>
-                    Users
-                  </InputLabel>
-                  <Select
-                    labelId='users-label'
-                    id='users'
-                    multiple
-                    value={usersValue}
-                    renderValue={() => <Typography>{usersValue.length} selected</Typography>}>
-                    <Box mx={1} mb={1}>
-                      <TextField
-                        value={searchText}
-                        onChange={handleChangeSearchText}
-                        fullWidth
-                        variant='outlined'
-                        placeholder='Search the user...'
-                        InputProps={{
-                          startAdornment: (
-                            <InputAdornment position='start'>
-                              <SearchIcon />
-                            </InputAdornment>
-                          ),
-                        }}
-                      />
-                    </Box>
-                    {filteredUsers.map(({ firstName, lastName, id }) => (
-                      <MenuItem key={id} value={id}>
-                        <FormControlLabel
-                          onChange={() => handleCheckUsers(id)}
-                          control={<Checkbox checked={Boolean(usersValue.find((u: string) => u === id))} />}
-                          label={`${firstName} ${lastName}`}
-                        />
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              )}
-            />
+            <OrganizationField />
           </Grid>
-        )}
 
-        <Box my={3}>
-          <Divider />
-        </Box>
+          {organizationValue && (
+            <Grid item>
+              <UsersField />
+            </Grid>
+          )}
 
-        <Grid item container justifyContent='flex-end'>
-          <Button onClick={handleSubmit(onSubmit)} variant='outlined'>
-            Submit
-          </Button>
+          <Box my={3}>
+            <Divider />
+          </Box>
+
+          <Grid item container justifyContent='flex-end'>
+            <Button onClick={handleSubmit(onSubmit)} variant='outlined'>
+              Submit
+            </Button>
+          </Grid>
         </Grid>
-      </Grid>
-    </form>
+      </form>
+    </FormProvider>
   );
 };
 
