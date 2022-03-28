@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Button, Divider, Grid } from '@mui/material';
 
@@ -7,9 +7,13 @@ import OrganizationField from './OrganizationField/OrganizationField';
 
 const SubscriptionForm: FC = () => {
   const methods = useForm();
-  const { handleSubmit, watch } = methods;
+  const { handleSubmit, watch, setValue } = methods;
 
   const organizationValue: string = watch('organization');
+
+  useEffect(() => {
+    setValue('users', []);
+  }, [organizationValue]);
 
   const onSubmit = (data: any) => console.log(data);
 

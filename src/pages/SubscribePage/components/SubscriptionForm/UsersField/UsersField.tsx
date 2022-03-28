@@ -1,4 +1,4 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import {
   Box,
@@ -30,9 +30,20 @@ const UsersField: FC = () => {
   const organizationValue: string = watch('organization');
   const usersValue: string[] = watch('users') || [];
 
+  useEffect(() => {
+    setSearchText('');
+  }, [organizationValue]);
+
   const filteredUsers: UserType[] = useMemo(
-    () => users.filter(user => user.organizationId === organizationValue).slice(0, 9),
-    [organizationValue],
+    () =>
+      users
+        .filter(({ firstName, lastName, organizationId }) => {
+          const ifSearchFirstName: boolean = firstName.toLowerCase().startsWith(searchText.toLowerCase());
+          const ifSearchLastName: boolean = lastName.toLowerCase().startsWith(searchText.toLowerCase());
+          return organizationId === organizationValue && (ifSearchFirstName || ifSearchLastName);
+        })
+        .slice(0, 9),
+    [organizationValue, searchText],
   );
 
   const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
