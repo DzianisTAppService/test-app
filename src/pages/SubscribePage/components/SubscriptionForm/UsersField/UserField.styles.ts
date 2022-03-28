@@ -1,14 +1,7 @@
 import styled from 'styled-components';
-import { Button } from '@mui/material';
+import { FormControlLabel } from '@mui/material';
 
-export const StyledButton = styled(Button)`
-  height: 57px;
-  justify-content: flex-start;
-  transition: none;
-  border-color: #9f9f9f99;
-  color: #000;
-  &:hover {
-    background-color: #fff;
-    border-color: #000;
-  }
+export const StyledFormControlLabel = styled(FormControlLabel)`
+  width: 100%;
+  display: block;
 `;
