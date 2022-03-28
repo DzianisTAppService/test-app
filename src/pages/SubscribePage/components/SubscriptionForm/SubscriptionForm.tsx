@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   Box,
@@ -35,6 +35,7 @@ type UserType = {
 
 const SubscriptionForm = () => {
   const { handleSubmit, control, watch, setValue } = useForm();
+  const [searchText, setSearchText] = useState('');
 
   const organizationValue: string = watch('organization');
   const usersValue: string[] = watch('users') || [];
@@ -47,6 +48,22 @@ const SubscriptionForm = () => {
     () => organizations.find(org => org.id === organizationValue)?.name || 'Error',
     [organizationValue],
   );
+
+  const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+
+  const handleCheckUsers = (id: string) => {
+    const ifSelected = usersValue.indexOf(id);
+    if (ifSelected > -1) {
+      setValue(
+        'users',
+        usersValue.filter(userId => userId !== id),
+      );
+    } else {
+      setValue('users', [...usersValue, id]);
+    }
+  };
 
   const onSubmit = (data: any) => console.log(data);
 
@@ -104,6 +121,8 @@ const SubscriptionForm = () => {
                     renderValue={() => <Typography>{usersValue.length} selected</Typography>}>
                     <Box mx={1} mb={1}>
                       <TextField
+                        value={searchText}
+                        onChange={handleChangeSearchText}
                         fullWidth
                         variant='outlined'
                         placeholder='Search the user...'
@@ -119,17 +138,7 @@ const SubscriptionForm = () => {
                     {filteredUsers.map(({ firstName, lastName, id }) => (
                       <MenuItem key={id} value={id}>
                         <FormControlLabel
-                          onChange={() => {
-                            const ifSelected = usersValue.indexOf(id);
-                            if (ifSelected > -1) {
-                              setValue(
-                                'users',
-                                usersValue.filter(userId => userId !== id),
-                              );
-                            } else {
-                              setValue('users', [...usersValue, id]);
-                            }
-                          }}
+                          onChange={() => handleCheckUsers(id)}
                           control={<Checkbox checked={Boolean(usersValue.find((u: string) => u === id))} />}
                           label={`${firstName} ${lastName}`}
                         />
