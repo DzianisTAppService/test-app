@@ -1,21 +1,11 @@
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
-import {
-  Box,
-  Checkbox,
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  MenuItem,
-  Select,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Checkbox, FormControl, InputAdornment, InputLabel, Select, TextField, Typography } from '@mui/material';
 
 import { users } from 'testData';
-import { StyledFormControlLabel } from './UserField.styles';
+import { StyledFormControlLabel, StyledMenuItem } from './UserField.styles';
 import SearchIcon from '@mui/icons-material/Search';
-import { makeSubStringBold } from '../../../../../utils';
+import { makeSubStringBold } from 'utils';
 
 type UserType = {
   firstName: string;
@@ -97,7 +87,7 @@ const UsersField: FC = () => {
               />
             </Box>
             {filteredUsers.map(({ firstName, lastName, id }) => (
-              <MenuItem key={id} value={id}>
+              <StyledMenuItem key={id} value={id}>
                 <StyledFormControlLabel
                   onChange={() => handleCheckUsers(id)}
                   control={<Checkbox checked={Boolean(usersValue.find((u: string) => u === id))} />}
@@ -108,7 +98,7 @@ const UsersField: FC = () => {
                     />
                   }
                 />
-              </MenuItem>
+              </StyledMenuItem>
             ))}
           </Select>
         </FormControl>
