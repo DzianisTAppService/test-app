@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { Box } from '@mui/material';
 
-const AppContainer = styled(Box)`
+const StyledAppContainer = styled(Box)`
   height: 100%;
   width: 100%;
 `;
@@ -11,4 +11,4 @@ const MainContentContainer = styled(Box)`
   width: 100%;
 `;
 
-export { AppContainer, MainContentContainer };
+export { StyledAppContainer, MainContentContainer };

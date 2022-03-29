@@ -1,4 +1,4 @@
-import React, { FC, useMemo } from 'react';
+import React, { FC } from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 import {
   FormControl,
@@ -22,11 +22,6 @@ const OrganizationField: FC = () => {
   const { control, watch } = useFormContext();
   const organizationValue: string = watch('organization');
 
-  const selectedOrganisationName: string = useMemo(
-    () => organizations.find(org => org.id === organizationValue)?.name || 'Error',
-    [organizationValue],
-  );
-
   return (
     <Controller
       name='organization'
@@ -41,11 +36,14 @@ const OrganizationField: FC = () => {
             id='organization'
             onChange={onChange}
             value={organizationValue}
-            renderValue={() => <Typography>{selectedOrganisationName}</Typography>}>
+            renderValue={e => <Typography>{JSON.parse(e).name}</Typography>}>
             {(organizations as OrganizationType[]).map(({ name, id }) => (
-              <MenuItem key={id} value={id}>
+              <MenuItem key={id} value={JSON.stringify({ id, name })}>
                 <RadioGroup aria-label={name} name={name}>
-                  <FormControlLabel value={id} control={<Radio checked={id === organizationValue} />} label={name} />
+                  <FormControlLabel
+                    control={<Radio checked={Boolean(organizationValue && id === JSON.parse(organizationValue).id)} />}
+                    label={name}
+                  />
                 </RadioGroup>
               </MenuItem>
             ))}

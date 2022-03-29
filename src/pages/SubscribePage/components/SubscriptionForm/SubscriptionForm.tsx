@@ -1,11 +1,14 @@
 import React, { FC, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useForm, FormProvider } from 'react-hook-form';
 import { Box, Button, Divider, Grid } from '@mui/material';
 
 import UsersField from './UsersField';
-import OrganizationField from './OrganizationField/OrganizationField';
+import OrganizationField from './OrganizationField';
+import PATHS from 'constants/routes-paths';
 
 const SubscriptionForm: FC = () => {
+  const navigate = useNavigate();
   const methods = useForm();
   const { handleSubmit, watch, setValue } = methods;
 
@@ -15,7 +18,9 @@ const SubscriptionForm: FC = () => {
     setValue('users', []);
   }, [organizationValue]);
 
-  const onSubmit = (data: any) => console.log(data);
+  const onSubmit = (data: any) => {
+    navigate(PATHS.welcome, { state: { formData: data } });
+  };
 
   return (
     <FormProvider {...methods}>

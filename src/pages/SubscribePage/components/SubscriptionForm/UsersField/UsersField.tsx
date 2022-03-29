@@ -34,17 +34,16 @@ const UsersField: FC = () => {
     setSearchText('');
   }, [organizationValue]);
 
-  const filteredUsers: UserType[] = useMemo(
-    () =>
-      users
-        .filter(({ firstName, lastName, organizationId }) => {
-          const ifSearchFirstName: boolean = firstName.toLowerCase().startsWith(searchText.toLowerCase());
-          const ifSearchLastName: boolean = lastName.toLowerCase().startsWith(searchText.toLowerCase());
-          return organizationId === organizationValue && (ifSearchFirstName || ifSearchLastName);
-        })
-        .slice(0, 9),
-    [organizationValue, searchText],
-  );
+  const filteredUsers: UserType[] = useMemo(() => {
+    const selectedOrganizationId = JSON.parse(organizationValue).id;
+    return users
+      .filter(({ firstName, lastName, organizationId }) => {
+        const ifSearchFirstName: boolean = firstName.toLowerCase().startsWith(searchText.toLowerCase());
+        const ifSearchLastName: boolean = lastName.toLowerCase().startsWith(searchText.toLowerCase());
+        return organizationId === selectedOrganizationId && (ifSearchFirstName || ifSearchLastName);
+      })
+      .slice(0, 9);
+  }, [organizationValue, searchText]);
 
   const handleChangeSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(e.target.value);
