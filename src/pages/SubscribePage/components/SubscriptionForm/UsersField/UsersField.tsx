@@ -15,6 +15,7 @@ import {
 import { users } from 'testData';
 import { StyledFormControlLabel } from './UserField.styles';
 import SearchIcon from '@mui/icons-material/Search';
+import { makeSubStringBold } from '../../../../../utils';
 
 type UserType = {
   firstName: string;
@@ -49,7 +50,7 @@ const UsersField: FC = () => {
     setSearchText(e.target.value);
   };
 
-  const handleCheckUsers = (id: string) => {
+  const handleCheckUsers = (id: string): void => {
     const ifSelected = usersValue.indexOf(id);
     if (ifSelected > -1) {
       setValue(
@@ -60,6 +61,8 @@ const UsersField: FC = () => {
       setValue('users', [...usersValue, id]);
     }
   };
+
+  const prepareUserLabel = (label: string): string => (searchText ? makeSubStringBold(label, searchText) : label);
 
   return (
     <Controller
@@ -98,7 +101,12 @@ const UsersField: FC = () => {
                 <StyledFormControlLabel
                   onChange={() => handleCheckUsers(id)}
                   control={<Checkbox checked={Boolean(usersValue.find((u: string) => u === id))} />}
-                  label={`${firstName} ${lastName}`}
+                  label={
+                    <Typography
+                      component='span'
+                      dangerouslySetInnerHTML={{ __html: prepareUserLabel(`${firstName} ${lastName}`) }}
+                    />
+                  }
                 />
               </MenuItem>
             ))}
