@@ -3,11 +3,12 @@ import { useLocation } from 'react-router-dom';
 import { Box, Grid, Typography } from '@mui/material';
 
 import NavBar from 'common/NavBar';
+import GlobalStyle from 'common/GlobalStyle';
 import Routes from './Routes';
 import PATHS from 'constants/routes-paths';
 import { capitalizeFirstLetter } from 'utils';
 
-import { MainContentContainer } from './App.styles';
+import { MainContentContainer, StyledAppContainer } from './App.styles';
 
 const navItems = [
   { text: 'Main', linkTo: PATHS.welcome },
@@ -19,7 +20,9 @@ const App: FC = () => {
   const title = pathname.substring(1);
 
   return (
-    <>
+    <StyledAppContainer>
+      <GlobalStyle />
+
       <NavBar links={navItems} />
 
       <MainContentContainer container direction='column'>
@@ -31,7 +34,7 @@ const App: FC = () => {
           <Routes />
         </Grid>
       </MainContentContainer>
-    </>
+    </StyledAppContainer>
   );
 };
 

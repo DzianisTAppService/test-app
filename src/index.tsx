@@ -2,15 +2,15 @@ import React, { lazy, Suspense } from 'react';
 import ReactDOM from 'react-dom';
 import { CircularProgress } from '@mui/material';
 
-const AppContainer = lazy(() => import('./app/AppContainer'));
+const AppProvider = lazy(() => import('./app/AppProvider'));
 const App = lazy(() => import('./app/App'));
 
 ReactDOM.render(
   <React.StrictMode>
     <Suspense fallback={<CircularProgress />}>
-      <AppContainer>
+      <AppProvider>
         <App />
-      </AppContainer>
+      </AppProvider>
     </Suspense>
   </React.StrictMode>,
   document.getElementById('root'),
